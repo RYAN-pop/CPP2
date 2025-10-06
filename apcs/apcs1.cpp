@@ -46,7 +46,7 @@ int main()
 	
 	if(grades[0]>=60)
 		cout<<"all pass"<<endl;
-	else if(grades[num]<60)
+	else if(grades[num-1]<60)
 		cout<<"all fail";
 		
 		
