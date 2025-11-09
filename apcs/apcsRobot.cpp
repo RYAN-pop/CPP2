@@ -2,23 +2,55 @@
 #include<string>
 using namespace std;
 
-class way{
-    public:
-    string direct;
-    int n;
 
+enum dir{N=0,E=1,S=2,W=3};
+class point{
+public:
+    int x;
+    int y;
+    string d;
+    point()=default;
+    point(int xin,int yin,int dir):x(xin),y(yin){
+        //x=xin;
+        //y=yin;
+        if(dir==N)      d="N";
+        else if(dir==E) d="E";
+        else if(dir==S) d="S";
+        else if(dir==W) d="W";
+    }
+    void output(){
+        cout<<x<<" "<<y<<" "<<d<<endl;
+    }
 };
-    
+struct Point{
+    int x=1;
+    int y=1;
+    int d;
+
+    void output(){
+        cout<<x<<" "<<y<<" "<<d<<endl;
+    }
+};
+ostream& operator <<(ostream &os, point &p){
+    os<<p.x<<" "<<p.y<<" "<<p.d<<endl; return os;
+}
+
+ 
 void botMove(int r1,int r2,int &a,int &b,int &c){
     string m;
-    cout<<"your move\n";
-    cin>>m;
+    cout << "your move\n";
+    cin >> m;
     for(int i=0;i<m.length();i++){
-        if(m[i]=='R')
-             c=(c+1)%4;
-        else if(m[i]=='L')
-            c=(c+3)%4;
+        if(m[i]=='R')       c=(c+1)%4;
+        else if(m[i]=='L')  c=(c+3)%4;
         else if(m[i]=='F'){
+            if(c==0)        b++;
+            else if(c==1)   a++;
+            else if(c==2)   b--;
+            else if(c==3)   a--;
+            else            cout<<"error\n";
+              
+           
             if(a<0){
                 cout<<"'lost ";
                 a++;
@@ -40,41 +72,30 @@ void botMove(int r1,int r2,int &a,int &b,int &c){
                 break;
             }
             
-            else{
-                if(c==0)
-                    b++;
-                else if(c==1)
-                    a++;
-                else if(c==2)
-                    b--;
-                else if(c==3)
-                    a--;
-            }
+            
         }
-    }
+    } 
+    
+    point p(a,b,c);
+    p.output();
+
+    
      
-     cout<<a<<" "<<b;
 }
 int main()
 {
-    way w1;
-    w1.direct="N";
-    w1.n=0;
-    way w2;
-    w2.direct="E";
-    w2.n=1;
-    way w3;
-    w3.direct="S";
-    w3.n=2;
-    way w4;
-    w4.direct="W";
-    w4.n=3;
+    //int a=10;// int a(10); int a{10}
+    //int ar[10](1,2,3);
     int r1,r2,x,y,z; 
-    string p;
+    string d;
     string command;
     cout<<"input range:\n";
     cin>>r1>>r2;
-    
+    //Point pArray[10]; // int ary[10];
+    point p(1,1,1);
+    point p1=p;
+    auto p2=point(1,2,3);
+    point pArray[3]={point(1,1,1),p,p2}; // int ary[10]={1,2};
 
     while(1){
         cout<<"input x,y and direction\n";
@@ -84,27 +105,21 @@ int main()
             break;
         }
         x=stoi(command);
-        cin>>y>>p;
+        cin>>y>>d;
+        if(d=="N")
+            z=N;
+        else if(d=="E")
+            z=E;
+        else if(d=="S")
+            z=S;
+        else if(d=="W")
+            z=W;
+       // botMove(r1,r2,x,y,z);
+        Point p={x,y,z};
+        botMove(r1,r2,p.x,p.y,p.d);
+        //pArray[0]=p;
         
         
-        if(p==w1.direct)
-            z=w1.n;
-        else if(p==w2.direct)
-            z=w2.n;
-         else if(p==w3.direct)
-            z=w3.n;
-        else if(p==w4.direct)
-            z=w4.n;
-        botMove(r1,r2,x,y,z);
-        cout<<" ";
-        if(z==w1.n)
-            cout<<w1.direct<<endl;
-        else if(z==w2.n)
-            cout<<w2.direct<<endl;
-        else if(z==w3.n)
-            cout<<w3.direct<<endl;
-        else if(z==w4.n)
-            cout<<w4.direct<<endl;
             
         
         
@@ -112,5 +127,7 @@ int main()
         
 
     }
+point (x,y,z);
+//point p1(p);
 
 }
