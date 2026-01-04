@@ -18,12 +18,14 @@ public:
 
     }
     vec(vec && v):data(v.data),size(v.size){
-        v.data=nullptr;
+        //v.data=nullptr;
         cout<<"move\n";
     }
 
     ~vec(){
-        debug(*this);delete [] data;
+        cout<<"size="<<size<<",";
+        debug(*this);
+        if(!data) delete [] data;
     }
     vec& pushBack(int add){
         int newSize=size+1;
@@ -51,6 +53,15 @@ public:
         }
         return v;
     }
+    /*vec& operator=(const vec& other){
+        size=other.size;
+        delete [] data;
+        data=new int[size];
+        for(int i=0;i<size;i++){
+            data[i]=other.data[i];
+        }
+        return *this;
+    }*/
     friend ostream& operator<<(ostream& output,const vec& other){
         for(int i=0;i<other.size;i++){
             output<<other.data[i]<<" ";
@@ -61,11 +72,13 @@ public:
 
 int main(){
     vec v(3); //v1{v};
-    vec v3(v.pushBack(99));
+    vec v1(v.pushBack(99));
     v[2]=1;
-    vec v4(v+v3);
-    v4.pushBack(2);
-    debug(v4);
+    vec v2(std::move(v+v1));
+    //vec v2(v+v1);
+    //v2.pushBack(2);
+    debug(v+v1);
+    //v[3]=0;v=v2+v;
     //v4=v+v3;
     //cout<<v<<endl<<v1<<endl<<v.pushBack(77)<<endl;
     
