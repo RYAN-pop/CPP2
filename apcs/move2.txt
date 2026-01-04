@@ -1,0 +1,41 @@
+4 4
+1 1 E
+RF
+1 1 E
+RFF
+1 1 E
+RFFF
+1 1 E
+RFFFF
+
+
+1 1 W
+RF
+1 1 W
+RFF
+1 1 W
+RFFF
+1 1 W
+RFFFF
+
+
+1 1 N
+RF
+1 1 N
+RFF
+1 1 N
+RFFF
+1 1 N
+RFFFF
+
+
+1 1 S
+RF
+1 1 S
+RFF
+1 1 S
+RFFF
+1 1 S
+RFFFF
+
+end

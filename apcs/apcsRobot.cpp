@@ -1,16 +1,24 @@
 #include<iostream>
 #include<string>
+#include<vector>
 using namespace std;
 
 
 enum dir{N=0,E=1,S=2,W=3};
-class point{
+class Range{
+    public:
+    int x;
+    int y;
+
+};
+vector<Range> outRange;
+class Point{
 public:
     int x;
     int y;
     string d;
-    point()=default;
-    point(int xin,int yin,int dir):x(xin),y(yin){
+    Point()=default;
+    Point(int xin,int yin,int dir):x(xin),y(yin){
         //x=xin;
         //y=yin;
         if(dir==N)      d="N";
@@ -22,20 +30,10 @@ public:
         cout<<x<<" "<<y<<" "<<d<<endl;
     }
 };
-struct Point{
-    int x=1;
-    int y=1;
-    int d;
-
-    void output(){
-        cout<<x<<" "<<y<<" "<<d<<endl;
-    }
-};
-ostream& operator <<(ostream &os, point &p){
+/*ostream& operator <<(ostream &os, point &p){
     os<<p.x<<" "<<p.y<<" "<<p.d<<endl; return os;
-}
+}*/
 
- 
 void botMove(int r1,int r2,int &a,int &b,int &c){
     string m;
     cout << "your move\n";
@@ -49,34 +47,42 @@ void botMove(int r1,int r2,int &a,int &b,int &c){
             else if(c==2)   b--;
             else if(c==3)   a--;
             else            cout<<"error\n";
-              
-           
+            for(int i=0;i<outRange.size();i++){
+                if(outRange[i].x==a && outRange[i].y==b){
+                    cout<<"this spot has been found\n";return;
+                }
+            }  
             if(a<0){
-                cout<<"'lost ";
+                cout<<"lost ";
                 a++;
+                outRange.push_back({a,b});
                 break;
             }
             else if(a>r1){
                 cout<<"lost ";
                 a--;
+                outRange.push_back({a,b});
                 break;
             }
             else if(b<0){
                 cout<<"lost ";
                 b++;
+                outRange.push_back({a,b});
                 break;
             }
             else if(b>r2){
                 b--;
                 cout<<"lost ";
+                outRange.push_back({a,b});
                 break;
             }
+           
             
             
         }
     } 
     
-    point p(a,b,c);
+    Point p(a,b,c);
     p.output();
 
     
@@ -91,11 +97,12 @@ int main()
     string command;
     cout<<"input range:\n";
     cin>>r1>>r2;
+    
     //Point pArray[10]; // int ary[10];
-    point p(1,1,1);
-    point p1=p;
-    auto p2=point(1,2,3);
-    point pArray[3]={point(1,1,1),p,p2}; // int ary[10]={1,2};
+    //point p(1,1,1);
+    //point p1=p;
+    //auto p2=point(1,2,3);
+    //point pArray[3]={point(1,1,1),p,p2}; // int ary[10]={1,2};
 
     while(1){
         cout<<"input x,y and direction\n";
@@ -114,20 +121,11 @@ int main()
             z=S;
         else if(d=="W")
             z=W;
-       // botMove(r1,r2,x,y,z);
         Point p={x,y,z};
-        botMove(r1,r2,p.x,p.y,p.d);
-        //pArray[0]=p;
-        
-        
-            
-        
-        
-
-        
-
+        botMove(r1,r2,p.x,p.y,z);
     }
-point (x,y,z);
+//Point (x,y,z);
 //point p1(p);
+cout<<"end of program!";
 
 }
