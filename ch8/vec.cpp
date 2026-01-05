@@ -3,6 +3,7 @@
 class vec{
     int *data=nullptr;
     int size;
+    using IL=initializer_list<int>;
 public:
     vec(int size=0):size(size){
         data=new int[size];
@@ -18,10 +19,18 @@ public:
 
     }
     vec(vec && v):data(v.data),size(v.size){
-        //v.data=nullptr;
+        v.data=nullptr;
         cout<<"move\n";
     }
-
+    vec(const IL& other):size(other.size()),data(new int[other.size()]){
+        //copy(other.begin(),other.end(),data);
+        //int count=0;
+         auto p=data;
+        for(auto x=other.begin();x!=other.end();x++){
+            //data[count]=*x;count++;
+            *p++=*x;
+        }
+    }
     ~vec(){
         cout<<"size="<<size<<",";
         debug(*this);
@@ -62,6 +71,18 @@ public:
         }
         return *this;
     }*/
+    vec& operator=(const vec& other){
+        if(data==other.data){
+            return *this;
+        }
+        size=other.size;
+        delete [] data;
+        data=new int[size];
+        for(int i=0;i<size;i++){
+            data[i]=other.data[i];
+        }
+        return *this;
+    }
     friend ostream& operator<<(ostream& output,const vec& other){
         for(int i=0;i<other.size;i++){
             output<<other.data[i]<<" ";
@@ -69,17 +90,33 @@ public:
         return output;
     }
 };
-
+void testIterator(){
+     vector<int> x{1,2,3};
+    vector<double> y;
+    for(int i=0;i<x.size();i++){x[i]++;}
+    for(int& i : x){i++;}
+    for(auto p=x.begin();p!=x.end();p++){
+        (*p)++;
+    }
+    debug(x);
+    for(int i=0;i<x.size();i++){
+        y.push_back(x[i]);
+    }
+    debug(y);
+}
 int main(){
-    vec v(3); //v1{v};
+    testIterator();
+    vec v{1,2,3}; //v1{v};
+    debug(sizeof(v));
     vec v1(v.pushBack(99));
     v[2]=1;
-    vec v2(std::move(v+v1));
-    //vec v2(v+v1);
+    //vec v2(std::move(v+v1));
+    //vec v2=std::move(v+v1);
+    vec v2=v+v1;
     //v2.pushBack(2);
-    debug(v+v1);
-    //v[3]=0;v=v2+v;
-    //v4=v+v3;
+    //debug(v+v1);
+    //vec v2;
+    //v2=v+v1;
     //cout<<v<<endl<<v1<<endl<<v.pushBack(77)<<endl;
-    
+    debug(sizeof(v));
 }
