@@ -49,6 +49,9 @@ public:
         size=newSize;
         return *this;
     }
+    const int& operator[](const int index)const{
+        return data[index];
+    }
     int& operator[](const int index){
         return data[index];
     }
@@ -83,6 +86,9 @@ public:
         }
         return *this;
     }
+    
+    operator bool(){return size;}
+
     friend ostream& operator<<(ostream& output,const vec& other){
         for(int i=0;i<other.size;i++){
             output<<other.data[i]<<" ";
@@ -104,19 +110,40 @@ void testIterator(){
     }
     debug(y);
 }
+void testBool(){
+     vec v{1,2,3};
+    int x=-3;
+    while(cin>>x){
+        //cin>>x;
+        v.pushBack(x);
+    }
+    debug(v);
+    cin.clear();
+    string y;cin>>y;
+    debug(y);
+    if(v){cout<<"abc";}
+}
+void testConst(){
+    const vec v{5,6,7,8};
+    cout<<v[0];
+    cout<<v[0];
+    //v.pushBack(v,-9);
+}
+void f1(vec a){debug(a);}
 int main(){
-    testIterator();
+    //testIterator();
     vec v{1,2,3}; //v1{v};
-    debug(sizeof(v));
-    vec v1(v.pushBack(99));
+    vec v1(v.pushBack(93));
     v[2]=1;
+    vec &r=v;
     //vec v2(std::move(v+v1));
     //vec v2=std::move(v+v1);
-    vec v2=v+v1;
+    vec v2=v+v1; debug(v2);
+    //f1(3);
     //v2.pushBack(2);
-    //debug(v+v1);
+    //debug((v+v1)[2]);
     //vec v2;
     //v2=v+v1;
     //cout<<v<<endl<<v1<<endl<<v.pushBack(77)<<endl;
-    debug(sizeof(v));
+    //testBool();
 }
