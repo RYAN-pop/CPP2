@@ -3,7 +3,7 @@ using Vec=vector<int>;
 
 void permutation1(Vec v,Vec prefix){
     for(int i=0;i<v.size();i++){
-        Vec t=v;
+        Vec t=v;//test
         prefix.push_back(t[i]);
         t.erase(t.begin()+i);
         if(t.size()==0){ 
@@ -28,6 +28,6 @@ void permutation(Vec v,int a){
     }
 }
 int main(){
-    Vec v={1,2,3,4,5};
+    Vec v={1,2,3,4};
     permutation1(v,{});
 }
