@@ -36,6 +36,7 @@ public:
         debug(*this);
         if(!data) delete [] data;
     }
+    
     vec& pushBack(int add){
         int newSize=size+1;
         int *newdata;
@@ -96,6 +97,53 @@ public:
         return output;
     }
 };
+class student{
+    vector<vec> record;
+    vec best;
+    int totalScore;
+    using IL=initializer_list<vec>;
+public:
+    student(const IL& il):record(il){
+        best=record[0];
+        int score=0;
+        for(int i=0;i<3;i++)
+            score+=record[0][i];
+        for(int i=1;i<record.size();i++){
+            int total=0;
+            for(int j=0;j<3;j++){
+                total+=record[i][j];
+            }
+            if(total>score){
+                score=total;
+                best=record[i];
+            } 
+        }
+        totalScore=score;
+    }
+    void add(const vec& v){
+        record.push_back(v);
+        best=record[0];
+        int score=0;
+        for(int i=0;i<3;i++)
+            score+=record[0][i];
+        for(int i=1;i<record.size();i++){
+            int total=0;
+            for(int j=0;j<3;j++){
+                total+=record[i][j];
+            }
+            if(total>score){
+                score=total;
+                best=record[i];
+            } 
+        }
+        totalScore=score;
+    }
+    void output(){
+        cout<<"best: ";
+        for(int i=0;i<3;i++)cout<<best[i]<<" ";
+        cout<<"\ntotal: "<<totalScore<<endl;
+    }
+};
 void testIterator(){
      vector<int> x{1,2,3};
     vector<double> y;
@@ -130,6 +178,18 @@ void testConst(){
     //v.pushBack(v,-9);
 }
 void f1(vec a){debug(a);}
+void testStudent(){
+    vec v{1,2,3};
+    vec v1{2,3,4};
+    vec v2{3,4,5};
+    student s{{0,1,1}};
+    s.output();
+    s.add(v);
+    s.add(v1);
+    s.output();
+    s.add(v2);
+    s.output();
+}
 int main(){
     //testIterator();
     vec v{1,2,3}; //v1{v};
@@ -146,4 +206,5 @@ int main(){
     //v2=v+v1;
     //cout<<v<<endl<<v1<<endl<<v.pushBack(77)<<endl;
     //testBool();
+    testStudent();
 }
