@@ -1,4 +1,5 @@
 #include"../my.h"
+
 enum Sex{male=0,female=1};
 class Person{
 public:
@@ -20,8 +21,8 @@ public:
 };
 ostream &operator<<(ostream &output, const Sex &sex)
 {
-    if (sex == male)        cout << "male\n";
-    else if(sex == female)  cout << "female\n";
+    if (sex == male)        cout << "male";
+    else if(sex == female)  cout << "female";
     else                    throw(2);
     return output;
 }
@@ -86,31 +87,74 @@ public:
 };
 class Player:protected Person{
 public:
+    using PlayerPtr=const Player* ;    
     string nic;
     Trainer trainer;
-    vector<Player*> friends;
+    vector<const Player*> friends;
+    set<PlayerPtr> all={};
+    
+    void allFriends(PlayerPtr p);
+    void print();
     void setNic(){
         cout<<"nic name: ";cin>>nic;
     }
     void setTrainer(const Trainer& t){
         trainer=t;
     }
-    void setFriends(const Player& p){
+    Player& addFriend(const Player& p){
         friends.push_back(&p);
+        return *this;
     }
-    friend ostream& operator<<(ostream& output,const Player& p){
-        output<<"name: "<<p.name<<endl;
-        output<<"age: "<<p.age<<endl;
-        output<<"sex: "<<p.sex<<endl;
-        output<<"nic name: "<<p.nic<<endl;
-        return output;
-    }
+    friend istream& operator>>(istream& input,Player& p);
+    friend ostream& operator<<(ostream& output,const Player& p);
     void getTrainer(){
         cout<<"trainer information: \n"<<trainer;
     }
 };
-
-
+istream &operator>>(istream &input, Player &p)
+{
+    /*cout << "enter Person name: ";
+    input >> p.name;
+    cout << "enetr Person age: ";
+    input >> p.age;
+    cout << "enetr Person sex: ";
+    input >> p.sex;*/
+    Person &person=p;
+    input>>person;
+    cout << "nic name: ";
+    input >> p.nic;
+    return input;
+}
+ostream &operator<<(ostream &output, const Player &p)
+{
+    const Person &person=p;
+    output<<person;
+    output << "nic name: " << p.nic << endl;
+    for(const auto &x : p.friends)
+        output<<"Friends:"<<(*x).name<<" \n";
+    output<<endl;
+    return output;
+}
+void Player::allFriends(PlayerPtr p){
+    int x=0; 
+    for(int j=0;j < p->friends.size();j++){
+        for(const auto &k : all){
+            if(p->friends[j]==k) x++;
+        }
+    } 
+    if(x==p->friends.size()) return;    
+    for(int i=0;i<p->friends.size();i++){ 
+            all.insert(p->friends[i]);
+            allFriends(p->friends[i]);
+        }
+          
+    }
+void Player::print(){
+    cout<<"--------\n";
+    for(const auto &i : all)
+        cout<<*i<<" ";
+    cout<<endl;
+}
 class team{
 public:
     string name;
@@ -125,11 +169,11 @@ public:
     void getCoach(const Person& p){
         coach=p;
     }
-    void getPlayer(const Player& p){
+    void getPlayer(Player& p){
         players.push_back(&p);
     }
 };
-int main(){
+void testFriend(){
     //int i=99;string s="qq";
     //cin>>i;debug(i);i=100;
     //cin>>i;debug(i);i=110;
@@ -154,4 +198,16 @@ int main(){
         x->age++;
     for(auto& x:friends)
         cout<<(*x);
+}
+int main(){
+    //testFriend();
+    Player p1,p2,p3,p4;
+    stringstream ss{"curry 38 male chef lebron 40 male king lrving 33 male unc p4 33 female f"};
+    ss>>p1>>p2>>p3>>p4;
+    p1.addFriend(p2).addFriend(p3);
+    p3.addFriend(p2).addFriend(p4);
+    cout<<p1<<p2<<p3;
+    p1.allFriends(&p1);
+    p1.print();
+    p3.allFriends(&p3);p3.print();
 }
